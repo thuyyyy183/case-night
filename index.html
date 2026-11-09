@@ -223,7 +223,7 @@ td ul{margin:0;padding-left:16px}
 
 /* case reports */
 .rbtn,.redit{font-family:var(--f-type);font-size:12px;background:none;border:0;color:var(--ink);text-decoration:underline;text-underline-offset:3px;padding:2px 0}
-.cfoot .acts{display:flex;gap:10px;align-items:center}
+.cfoot{flex-wrap:wrap}.cfoot .acts{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px 10px;align-items:center;margin-left:auto}.solve,.recur{white-space:nowrap}
 .report{background:var(--paper-hi);border-left:3px solid var(--blood);padding:7px 10px;font-size:13.5px;box-shadow:0 2px 6px rgba(0,0,0,.12)}
 .rhead{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-type);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--blood)}
 .rline{font-family:var(--f-type);font-size:12.5px;margin:3px 0 2px;color:var(--ink)}
@@ -357,7 +357,7 @@ td ul{margin:0;padding-left:16px}
     <span><span class="lvl b">Beginner</span> guided, forgiving</span>
     <span><span class="lvl i">Intermediate</span> real deduction, some notes</span>
     <span><span class="lvl a">Advanced</span> heavy notes, long or technical</span>
-    <span><span class="recur" style="color:var(--dim);border-color:var(--dim)">Refreshes: Daily</span> new puzzles keep coming, so nothing to stamp</span>
+    <span><span class="recur" style="color:var(--dim);border-color:var(--dim)">Refreshes: Daily</span> mark it done for today; it resets tomorrow</span>
     <span><span class="stat warn">Not in browser</span> needs a download</span>
   </div>
 
@@ -597,6 +597,11 @@ let played={};const tabs={};
 try{played=JSON.parse(localStorage.getItem("cn-played")||"{}")||{}}catch(e){played={}}
 try{const v=localStorage.getItem("cn-view2");if(v==="log"||v==="board"||v==="reports")st.view=v}catch(e){}
 G.forEach(g=>{if(g.rec)delete played[g.id]});
+const periodKey=g=>{const d=new Date();if(g.rec==="Weekly"){const m=new Date(d);m.setDate(d.getDate()-((d.getDay()+6)%7));return "w"+m.toLocaleDateString("en-CA")}return d.toLocaleDateString("en-CA")};
+let daily={};try{daily=JSON.parse(localStorage.getItem("cn-daily")||"{}")||{}}catch(e){daily={}}
+const dailyDone=g=>!!g.rec&&daily[g.id]===periodKey(g);
+const doneWord=g=>g.rec==="Weekly"?"this week":"today";
+const dailyBtn=g=>`<button type="button" class="solve" data-daily="${g.id}" aria-pressed="${dailyDone(g)}">${dailyDone(g)?"Done "+doneWord(g)+" ✓":"Mark done "+doneWord(g)}</button>`;
 let reports={};try{reports=JSON.parse(localStorage.getItem("cn-reports")||"{}")||{}}catch(e){reports={}}
 const saveReports=()=>{try{localStorage.setItem("cn-reports",JSON.stringify(reports))}catch(e){}};
 const WHO={daddy:"Daddy cracked it",baby:"Baby cracked it",team:"Team effort",nobody:"Nobody (we peeked)"};
@@ -624,13 +629,13 @@ mk("g-mood",MOODS.map(m=>[m,m]),"mood");
 mk("g-len",Object.entries(LENS).map(([k,v])=>[v,k]),"len");
 mk("g-kind",[["One-time","once"],["Refreshes","rec"]],"kind");
 mk("g-acc",[["Plays in browser","ok"],["Needs download","warn"]],"acc");
-{const T={b:"Guided, forgiving",i:"Real deduction, some notes",a:"Heavy notes, long or technical",once:"Finish it once, then stamp it solved",rec:"New puzzles keep coming, so nothing to stamp",ok:"Link checked, runs in your browser",warn:"Needs a download",unk:"The site blocked our link check"};document.querySelectorAll(".chip").forEach(c=>{if(T[c.dataset.v])c.title=T[c.dataset.v]})}
+{const T={b:"Guided, forgiving",i:"Real deduction, some notes",a:"Heavy notes, long or technical",once:"Finish it once, then stamp it solved",rec:"Mark it done for today; it resets tomorrow (weekly ones reset on Monday)",ok:"Link checked, runs in your browser",warn:"Needs a download",unk:"The site blocked our link check"};document.querySelectorAll(".chip").forEach(c=>{if(T[c.dataset.v])c.title=T[c.dataset.v]})}
 
 function filtered(){const q=st.q.trim().toLowerCase();return G.filter(g=>(!st.lvl||g.lvl===st.lvl)&&(!st.mood||g.moods.includes(st.mood))&&(!st.len||g.lenK===st.len)&&(!st.kind||(st.kind==="rec")===!!g.rec)&&(!st.acc||(g.st==="warn"?"warn":"ok")===st.acc)&&(!q||(g.n+" "+g.set+" "+g.u+" "+g.moods.join(" ")).toLowerCase().includes(q)))}
 
 function card(g,k){
   const t=tabs[g.id]||"case",on=x=>x===t;
-  return `<article class="case c${k%3}${played[g.id]?" done":""}" data-id="${g.id}" style="--tilt:${tilt(g.id)}deg">
+  return `<article class="case c${k%3}${played[g.id]||dailyDone(g)?" done":""}" data-id="${g.id}" style="--tilt:${tilt(g.id)}deg">
   <span class="pin" aria-hidden="true"></span>
   <div class="ctop"><span class="cno">Case ${no(g)}</span>${g.new?'<span class="new">NEW</span>':""}${statB(g)}</div>
   <h3><a href="${g.url}" target="_blank" rel="noopener">${esc(g.n)} ↗</a></h3>
@@ -643,12 +648,12 @@ function card(g,k){
     <div class="panel${on("two")?" on":""}" data-p="two"><p class="two">${esc(g.t)}</p></div>
   </div>
   ${played[g.id]&&reports[g.id]?`<div class="report"><div class="rhead"><span>Case report</span><span>${esc(fmtDate(reports[g.id].date))}</span></div><div class="rline">${repLine(reports[g.id])}</div>${reports[g.id].notes?`<p class="rnotes">${esc(reports[g.id].notes)}</p>`:""}<button type="button" class="redit" data-report="${g.id}">Edit report</button></div>`:""}
-  <div class="cfoot"><span class="tag">${LENS[g.lenK]}</span><span class="acts">${g.rec?`<span class="recur">Refreshes: ${g.rec}</span>`:""}${g.rec?"":`${played[g.id]&&!reports[g.id]?`<button type="button" class="rbtn" data-report="${g.id}">Write report</button>`:""}<button type="button" class="solve" data-solve="${g.id}" aria-pressed="${!!played[g.id]}">${played[g.id]?"Solved ✓":"Mark solved"}</button>`}</span></div>
-  <span class="stamp" aria-hidden="true">SOLVED</span></article>`}
+  <div class="cfoot"><span class="tag">${LENS[g.lenK]}</span><span class="acts">${g.rec?`<span class="recur">Refreshes: ${g.rec}</span>`+dailyBtn(g):""}${g.rec?"":`${played[g.id]&&!reports[g.id]?`<button type="button" class="rbtn" data-report="${g.id}">Write report</button>`:""}<button type="button" class="solve" data-solve="${g.id}" aria-pressed="${!!played[g.id]}">${played[g.id]?"Solved ✓":"Mark solved"}</button>`}</span></div>
+  <span class="stamp" aria-hidden="true">${g.rec?"DONE "+doneWord(g).toUpperCase():"SOLVED"}</span></article>`}
 
-function row(g){return `<tr class="${played[g.id]?"done":""}" data-id="${g.id}"><td><div class="tcase">Case ${no(g)} ${g.new?'<span class="new">NEW</span>':""}</div><div class="tname"><a href="${g.url}" target="_blank" rel="noopener">${esc(g.n)} ↗</a></div>${statB(g)}</td>
+function row(g){return `<tr class="${played[g.id]||dailyDone(g)?"done":""}" data-id="${g.id}"><td><div class="tcase">Case ${no(g)} ${g.new?'<span class="new">NEW</span>':""}</div><div class="tname"><a href="${g.url}" target="_blank" rel="noopener">${esc(g.n)} ↗</a></div>${statB(g)}</td>
   <td>${esc(g.set)}</td><td><span class="lvl ${g.lvl}">${LV[g.lvl]}</span></td><td>${esc(g.len)}</td><td>${esc(g.u)}</td><td>${ul(g.p)}</td><td>${ul(g.c)}</td><td>${esc(g.t)}</td>
-  <td>${g.rec?`<span class="recur">Refreshes: ${g.rec}</span>`:`<button type="button" class="solve" data-solve="${g.id}" aria-pressed="${!!played[g.id]}">${played[g.id]?"Solved ✓":"Mark solved"}</button>${played[g.id]?(reports[g.id]?`<div class="tdrep">${repLine(reports[g.id])}</div><button type="button" class="redit" data-report="${g.id}">Edit report</button>`:`<div><button type="button" class="rbtn" data-report="${g.id}">Write report</button></div>`):""}`}</td></tr>`}
+  <td>${g.rec?`<span class="recur">Refreshes: ${g.rec}</span><div style="margin-top:5px">${dailyBtn(g)}</div>`:`<button type="button" class="solve" data-solve="${g.id}" aria-pressed="${!!played[g.id]}">${played[g.id]?"Solved ✓":"Mark solved"}</button>${played[g.id]?(reports[g.id]?`<div class="tdrep">${repLine(reports[g.id])}</div><button type="button" class="redit" data-report="${g.id}">Edit report</button>`:`<div><button type="button" class="rbtn" data-report="${g.id}">Write report</button></div>`):""}`}</td></tr>`}
 
 function progress(){const n=ONCE.filter(g=>played[g.id]).length;$("solvedN").textContent=n;$("totalN").textContent=ONCE.length;$("pfill").style.width=(n/ONCE.length*100)+"%";const rs=Object.entries(reports).filter(([id])=>played[id]).map(([,v])=>v);const d=rs.filter(x=>x.who==="daddy").length,b=rs.filter(x=>x.who==="baby").length;$("score").textContent=rs.length?` · Daddy ${d} – Baby ${b}`:""}
 function render(){
@@ -691,6 +696,9 @@ document.addEventListener("click",e=>{
   if(pr){const P={cozy:[{lvl:null,mood:"Cozy",len:null},"Fireside cases. Pour a Whiskey Sour."],spooky:[{lvl:null,mood:"Spooky",len:null},"Lights off. Don\'t let go of my hand."],warm:[{lvl:"b",mood:null,len:"quick"},"It's like Krillion, but for deduction skills."],brain:[{lvl:"a",mood:null,len:null},"Clear the weekend. This one bites."]}[pr.dataset.preset];
     st.kind=st.acc=null;Object.assign(st,P[0]);st.q="";$("q").value="";render();say(P[1]);$("board").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});return}
   const rp=e.target.closest("[data-report]");if(rp&&!e.target.closest("#modal")){openReport(rp.dataset.report);return}
+  const dd=e.target.closest("[data-daily]");
+  if(dd){const g=G.find(x=>x.id===dd.dataset.daily);const was=dailyDone(g);if(was)delete daily[g.id];else daily[g.id]=periodKey(g);try{localStorage.setItem("cn-daily",JSON.stringify(daily))}catch(err){}
+    if(!was){const r=dd.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,10);say(g.rec==="Weekly"?"Done for the week. New cases on Monday.":"Done for today. Fresh puzzle tomorrow.")}render();return}
   const sv=e.target.closest("[data-solve]");if(sv){toggleSolve(sv.dataset.solve,sv);return}
   if(e.target.closest("[data-clear]"))clearAll();
 });
@@ -740,7 +748,7 @@ function renderReports(){
 let busy=false,lastFocus=null;
 function pick(){
   if(busy)return;
-  const pool=filtered().filter(g=>!played[g.id]);
+  const pool=filtered().filter(g=>!played[g.id]&&!dailyDone(g));
   if(!pool.length){openModal(null);return}
   const g=pool[Math.floor(Math.random()*pool.length)];
   say("Shuffling the files…");
