@@ -299,7 +299,6 @@ td ul{margin:0;padding-left:16px}
     <span><span class="lvl b">Beginner</span> guided, forgiving</span>
     <span><span class="lvl i">Intermediate</span> real deduction, some notes</span>
     <span><span class="lvl a">Advanced</span> heavy notes, long or technical</span>
-    <span><span class="stat ok">Link OK</span> checked 7 Nov 2026</span>
     <span><span class="stat warn">Not in browser</span> needs a download</span>
     <span><span class="stat unk">Not checked</span> site blocked the check</span>
   </div>
@@ -547,7 +546,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const ul=a=>"<ul>"+a.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>";
 const no=g=>String(G.indexOf(g)+1).padStart(2,"0");
 const tilt=id=>{let h=0;for(const ch of id)h=(h*31+ch.charCodeAt(0))|0;return ((Math.abs(h)%31)-15)/10};
-const statB=g=>{const s=STAT[g.st||"ok"];return `<span class="stat ${s[0]}">${s[1]}</span>`};
+const statB=g=>{if(!g.st||g.st==="ok")return "";const s=STAT[g.st];return `<span class="stat ${s[0]}">${s[1]}</span>`};
 
 /* speech bubble */
 let tipI=0,tipTimer;
