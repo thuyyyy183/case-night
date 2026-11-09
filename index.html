@@ -216,7 +216,7 @@ td ul{margin:0;padding-left:16px}
 .details dt{font-weight:800;color:var(--rose)}
 .details dd{margin:0}
 .sign{font-family:var(--f-hand);font-size:22px;color:var(--muted);margin-top:8px}
-.ibtns{display:flex;justify-content:center;gap:10px;margin-top:14px;position:relative;min-height:46px}
+.ibtns{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px;position:relative;min-height:46px}
 .accept{font-family:var(--f-display);font-weight:600;font-size:18px;background:var(--rose);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:8px 22px;box-shadow:0 4px 0 var(--ink)}
 .accept:hover{transform:translateY(-2px)}
 .nope{font-weight:700;font-size:13px;background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:6px 14px;transition:transform .25s cubic-bezier(.3,1.5,.5,1);position:relative;z-index:2}
@@ -700,7 +700,7 @@ function showLetter(){intro.classList.remove("opening");dodges=0;
     <p class="msg"><em>Daddy</em> is cordially invited to join the <em>Case Night Detective Club</em> with <em>baby</em>.</p>
     <dl class="details"><dt>What</dt><dd>Solving mindfucks together</dd><dt>Where</dt><dd>Your place or mine?</dd><dt>Dress code</dt><dd>Naked preferably (just kidding, please get dressed)</dd><dt>Bring</dt><dd>Your iPad for note taking and milktea for me</dd></dl>
     <div class="sign">♥ baby (your trouble maker)</div>
-    <div class="ibtns"><button type="button" class="accept" id="accept">I accept ♥</button><button type="button" class="nope" id="nope">No thanks</button></div>
+    <div class="ibtns"><button type="button" class="accept" id="accept">Of course I'd accept ♥</button><button type="button" class="nope" id="nope">Why is there a second button here</button></div>
   </div>`;
   const inv=stage.querySelector(".invite").getBoundingClientRect();burst(inv.left+inv.width/2,inv.top+30,18);
   $("accept").focus();
