@@ -295,6 +295,11 @@ td ul{margin:0;padding-left:16px}
 @media (max-width:900px){.tools{grid-template-columns:1fr}}
 @media (min-width:901px){.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px 24px;padding:10px 16px}}
 @media (max-width:640px){.tools .grp>b{flex:0 0 100%;margin:2px 0 0}.tools .grp{flex-wrap:wrap;overflow:visible;gap:6px}.tools .chip{font-size:13.5px;padding:5px 11px}.tools .search{flex:1 1 100%}}
+
+/* crumpled parchment invitation */
+.invite{background:radial-gradient(ellipse 34% 20% at 14% 12%,rgba(125,82,30,.16),transparent 70%),radial-gradient(ellipse 30% 26% at 88% 86%,rgba(115,72,25,.18),transparent 70%),radial-gradient(ellipse 16% 10% at 76% 22%,rgba(130,85,35,.12),transparent 70%),radial-gradient(ellipse at 50% 50%,transparent 58%,rgba(98,60,22,.38) 100%),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .08 0 0 0 .45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1100' height='1100'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='.013 .02' numOctaves='5' seed='19' stitchTiles='stitch'/><feDiffuseLighting lighting-color='%23fff' surfaceScale='5'><feDistantLight azimuth='50' elevation='48'/></feDiffuseLighting></filter><rect width='100%25' height='100%25' filter='url(%23c)'/></svg>"),linear-gradient(165deg,#f3e9d4,#e2d0ac);background-blend-mode:multiply,multiply,multiply,multiply,multiply,multiply,normal;box-shadow:0 30px 70px rgba(0,0,0,.7),inset 0 0 40px rgba(110,70,25,.25)}
+.invite::before{border-color:rgba(120,85,40,.45)}
+.invite .details{max-width:390px;background:rgba(196,165,105,.28);box-shadow:inset 0 0 0 1px rgba(120,85,40,.25)}
 @media (max-width:640px){
   .radio-screen,.radio-screen iframe{width:72px;height:40px}
   .tools{position:static}
@@ -829,7 +834,7 @@ function showLetter(){intro.classList.remove("opening");dodges=0;
   stage.innerHTML=`<div class="invite">
     <p class="msg"><em>Daddy</em> is cordially invited to join the <em>Case Night Detective Club</em> with <em>baby</em>.</p>
     <dl class="details"><dt>What</dt><dd>Solving mindfucks together</dd><dt>Where</dt><dd>Your place, my place, or a cute cafe?</dd><dt>Dress code</dt><dd>Naked preferably (just kidding, please get dressed)</dd><dt>Bring</dt><dd>Your iPad for note taking and mango milktea for me</dd></dl>
-    <div class="sign">♥ baby (your trouble maker)</div>
+    <div class="sign">Little miss trouble maker</div>
     <div class="ibtns"><button type="button" class="accept" id="accept">Of course I'd accept ♥</button><button type="button" class="nope" id="nope">Why is there a second button here</button></div>
   </div>`;
   const inv=stage.querySelector(".invite").getBoundingClientRect();burst(inv.left+inv.width/2,inv.top+30,18);
