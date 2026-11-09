@@ -219,7 +219,7 @@ td ul{margin:0;padding-left:16px}
 .ibtns{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px;position:relative;min-height:46px}
 .accept{font-family:var(--f-display);font-weight:600;font-size:18px;background:var(--rose);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:8px 22px;box-shadow:0 4px 0 var(--ink)}
 .accept:hover{transform:translateY(-2px)}
-.nope{font-weight:700;font-size:13px;background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:6px 14px;transition:transform .25s cubic-bezier(.3,1.5,.5,1);position:relative;z-index:2}
+.nope{max-width:calc(100% - 36px);white-space:normal;font-weight:700;font-size:13px;background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:6px 14px;transition:transform .25s cubic-bezier(.3,1.5,.5,1);position:relative;z-index:2}
 .reinvite{font-weight:700;font-size:13px;color:var(--rose);background:none;border:0;text-decoration:underline;text-underline-offset:3px;padding:2px}
 @media (prefers-reduced-motion:reduce){.env,.env-hint,.invite{animation:none}.env-flap,.env-letter,.seal,.intro{transition:none}}
 @media (max-width:640px){
@@ -706,12 +706,29 @@ function showLetter(){intro.classList.remove("opening");dodges=0;
   $("accept").focus();
   $("accept").addEventListener("click",accept);
   const n=$("nope");
-  const LINES=["wow you're a quick learner","omg make it stop","move one more time and I'll tie you down"];
-  let lastDodge=0;
-  const dodge=e=>{if(dodges>=4)return;e.preventDefault();if(Date.now()-lastDodge<450)return;lastDodge=Date.now();dodges++;if(dodges<=3)n.textContent=LINES[dodges-1];
-    const x=(Math.random()<.5?-1:1)*(60+Math.random()*90),y=-(10+Math.random()*60);
-    n.style.transform=`translate(${x}px,${y}px) rotate(${(Math.random()-.5)*30}deg)`;
-    if(dodges>=4){n.textContent="Okay fine, yes ♥";n.style.transform="none";n.classList.replace("nope","accept")}};
+  const LINES=["wow you're a quick learner","omg stop","move one more time and I'll tie you down"];
+  const card=n.closest(".invite"),acc=$("accept");
+  let lastDodge=0,tx=0,ty=0;
+  const hit=(a,b)=>!(a.right<b.left||a.left>b.right||a.bottom<b.top||a.top>b.bottom);
+  function hop(){
+    const pad=18,cr=card.getBoundingClientRect(),br=n.getBoundingClientRect(),ar=acc.getBoundingClientRect();
+    const bl=br.left-tx,bt=br.top-ty,w=br.width,h=br.height;
+    const minX=cr.left+pad-bl,maxX=cr.right-pad-w-bl,minY=cr.top+pad-bt,maxY=cr.bottom-pad-h-bt;
+    let best=null;
+    for(let i=0;i<24;i++){
+      const x=minX+Math.random()*Math.max(0,maxX-minX),y=minY+Math.random()*Math.max(0,maxY-minY);
+      const box={left:bl+x,right:bl+x+w,top:bt+y,bottom:bt+y+h};
+      const far=Math.hypot(x-tx,y-ty)>60;
+      if(!hit(box,{left:ar.left-6,right:ar.right+6,top:ar.top-6,bottom:ar.bottom+6})&&far){best=[x,y];break}
+      if(!best&&far)best=[x,y];
+    }
+    if(!best)best=[0,0];
+    tx=best[0];ty=best[1];
+    n.style.transform=`translate(${tx}px,${ty}px) rotate(${(Math.random()-.5)*8}deg)`;
+  }
+  const dodge=e=>{if(dodges>=4)return;e.preventDefault();if(Date.now()-lastDodge<450)return;lastDodge=Date.now();dodges++;
+    if(dodges>=4){n.textContent="Okay fine, yes ♥";n.style.transform="none";tx=ty=0;n.classList.replace("nope","accept");return}
+    n.textContent=LINES[dodges-1];hop()};
   n.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")dodge(e)});
   n.addEventListener("click",e=>{if(dodges>=4){accept(e);return}dodge(e)});
 }
