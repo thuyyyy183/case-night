@@ -268,6 +268,14 @@ td ul{margin:0;padding-left:16px}
 .seal{width:76px;height:76px;margin:-38px 0 0 -38px;top:56%;background:none;border-radius:0;box-shadow:none;filter:drop-shadow(0 3px 2px rgba(45,10,5,.55)) drop-shadow(0 8px 10px rgba(45,10,5,.3))}
 .seal svg{opacity:1;width:76px;height:76px}
 .env-to{background:#ead9b6;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .08 0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");border:0;border-radius:1px;color:#2a1a0d;box-shadow:0 2px 4px rgba(60,35,10,.45);bottom:7%;font-size:17px;transform:translateX(-50%) rotate(2deg)}
+
+/* photo envelope */
+.env{width:min(400px,84vw);aspect-ratio:auto;transform:none;filter:drop-shadow(0 26px 28px rgba(0,0,0,.65)) drop-shadow(0 4px 5px rgba(0,0,0,.35));animation:floatImg 3.4s ease-in-out infinite}
+.env:hover{transform:scale(1.04)}
+@keyframes floatImg{50%{transform:translateY(-9px) rotate(1deg)}}
+.env-img{display:block;width:100%;height:auto;pointer-events:none;user-select:none}
+.env-to{left:31%;top:73%;bottom:auto;transform:translate(-50%,-50%) rotate(-25deg);font-size:16px}
+.opening .env{animation:none;transform:scale(1.1) translateY(-14px) rotate(-3deg);opacity:0;transition:transform .7s ease,opacity .45s ease .3s}
 @media (max-width:640px){
   .radio-screen,.radio-screen iframe{width:72px;height:40px}
   .tools{position:static}
@@ -327,7 +335,7 @@ td ul{margin:0;padding-left:16px}
       </div>
     </div>
     <div class="presets" aria-label="Quick plans"><b>Quick plans</b><div>
-      <button type="button" class="preset" data-preset="cozy">Fireside date night<small>Slow, warm and low-stress</small></button>
+      <button type="button" class="preset" data-preset="cozy">Cozy date nights<small>Slow, warm and low-stress</small></button>
       <button type="button" class="preset" data-preset="spooky">Spooky date<small>Lights off, don't let go</small></button>
       <button type="button" class="preset" data-preset="warm">10-minute warm-up<small>Quick beginner puzzles</small></button>
       <button type="button" class="preset" data-preset="brain">Big-brain weekend<small>Advanced, notebook required</small></button>
@@ -370,14 +378,7 @@ td ul{margin:0;padding-left:16px}
 
 <div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="An invitation">
   <div class="stage" id="stage">
-    <button type="button" class="env" id="env" aria-label="Open the envelope">
-      <span class="env-back"></span>
-      <span class="env-letter">Confidential</span>
-      <span class="env-pocket"></span>
-      <span class="env-flap"></span>
-      <span class="env-to">for Daddy</span>
-      <span class="seal" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><radialGradient id="wx" cx="36%" cy="30%" r="75%"><stop offset="0" stop-color="#d23a40"/><stop offset=".5" stop-color="#951a22"/><stop offset="1" stop-color="#4c0a0f"/></radialGradient><radialGradient id="wx2" cx="62%" cy="66%" r="70%"><stop offset="0" stop-color="#6e1218"/><stop offset="1" stop-color="#a5222b"/></radialGradient></defs><path d="M94.6 52.9Q94.4 55.8 93.4 58.6Q92.3 61.3 91.7 64.2Q91.1 67.0 89.3 69.4Q87.5 71.7 86.7 74.6Q85.8 77.5 83.0 78.8Q80.2 80.2 77.6 81.4Q75.0 82.6 73.1 84.7Q71.3 86.9 68.7 87.9Q66.1 88.9 63.1 88.2Q60.1 87.5 57.5 87.9Q55.0 88.2 52.5 88.7Q50.0 89.2 47.2 90.5Q44.5 91.8 41.6 91.9Q38.8 91.9 35.9 91.4Q33.1 90.9 30.3 90.0Q27.4 89.1 25.0 87.5Q22.5 85.9 20.9 83.3Q19.3 80.7 16.6 79.2Q14.0 77.6 13.8 74.3Q13.6 71.0 11.3 69.0Q8.9 67.0 8.0 64.3Q7.1 61.5 7.9 58.5Q8.8 55.4 10.1 52.7Q11.4 50.0 11.4 47.5Q11.3 44.9 11.3 42.3Q11.3 39.6 12.2 37.2Q13.0 34.7 13.7 32.1Q14.5 29.5 15.3 26.7Q16.0 23.9 17.3 21.3Q18.6 18.6 21.2 17.2Q23.7 15.7 26.6 15.1Q29.6 14.6 31.0 11.1Q32.5 7.6 34.9 5.2Q37.3 2.7 40.6 3.3Q43.9 3.9 47.0 4.7Q50.0 5.5 52.7 7.0Q55.5 8.6 58.0 9.4Q60.6 10.3 63.0 11.5Q65.4 12.7 67.5 14.4Q69.5 16.1 71.8 17.4Q74.0 18.7 76.3 20.1Q78.6 21.4 81.3 22.7Q84.1 23.9 84.9 26.6Q85.7 29.4 86.3 32.1Q86.9 34.7 87.8 37.2Q88.6 39.6 90.4 42.0Q92.2 44.4 93.6 47.2Q94.9 50.0 94.6 52.9Z" fill="url(#wx)"/><circle cx="50" cy="50" r="30.5" fill="none" stroke="rgba(45,0,4,.5)" stroke-width="2.4"/><circle cx="50" cy="50" r="28" fill="url(#wx2)"/><circle cx="50" cy="50" r="28" fill="none" stroke="rgba(255,190,190,.35)" stroke-width="1.3"/><circle cx="50" cy="50" r="22" fill="none" stroke="rgba(60,0,6,.45)" stroke-width="1" stroke-dasharray="1.5 2.2"/><path d="M50 62s-11-6.6-11-13.6a5.9 5.9 0 0 1 11-2.9 5.9 5.9 0 0 1 11 2.9C61 55.4 50 62 50 62z" fill="rgba(255,175,175,.32)" transform="translate(.8 .9)"/><path d="M50 62s-11-6.6-11-13.6a5.9 5.9 0 0 1 11-2.9 5.9 5.9 0 0 1 11 2.9C61 55.4 50 62 50 62z" fill="#5e0d13"/><ellipse cx="34" cy="28" rx="11" ry="6" fill="rgba(255,255,255,.22)" transform="rotate(-30 34 28)"/></svg></span>
-    </button>
+    <button type="button" class="env" id="env" aria-label="Open the envelope"><img class="env-img" src="img/envelope.png" alt="" width="672" height="622"><span class="env-to">for Daddy</span></button>
     <div class="env-hint">Tap to open</div>
   </div>
 </div>
@@ -795,7 +796,7 @@ const STAGE0=stage.innerHTML;
 function showIntro(){intro.hidden=false;intro.classList.remove("bye","opening");stage.innerHTML=STAGE0;bindEnv()}
 function bindEnv(){$("env").addEventListener("click",openEnv,{once:true})}
 function openEnv(){startMusic();try{localStorage.setItem("cn-invite-day",new Date().toLocaleDateString("en-CA"))}catch(e){}intro.classList.add("opening");const r=$("env").getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,10);
-  setTimeout(showLetter,reduced?0:1250)}
+  setTimeout(showLetter,reduced?0:800)}
 let dodges=0;
 function showLetter(){intro.classList.remove("opening");dodges=0;
   stage.innerHTML=`<div class="invite">
