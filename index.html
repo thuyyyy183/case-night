@@ -304,6 +304,16 @@ td ul{margin:0;padding-left:16px}
 .invite{background:radial-gradient(ellipse 34% 20% at 14% 12%,rgba(125,82,30,.16),transparent 70%),radial-gradient(ellipse 30% 26% at 88% 86%,rgba(115,72,25,.18),transparent 70%),radial-gradient(ellipse 16% 10% at 76% 22%,rgba(130,85,35,.12),transparent 70%),radial-gradient(ellipse at 50% 50%,transparent 58%,rgba(98,60,22,.38) 100%),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .08 0 0 0 .45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1100' height='1100'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='.013 .02' numOctaves='5' seed='19' stitchTiles='stitch'/><feDiffuseLighting lighting-color='%23fff' surfaceScale='5'><feDistantLight azimuth='50' elevation='48'/></feDiffuseLighting></filter><rect width='100%25' height='100%25' filter='url(%23c)'/></svg>"),linear-gradient(165deg,#f3e9d4,#e2d0ac);background-blend-mode:multiply,multiply,multiply,multiply,multiply,multiply,normal;box-shadow:0 30px 70px rgba(0,0,0,.7),inset 0 0 40px rgba(110,70,25,.25)}
 .invite::before{border-color:rgba(120,85,40,.45)}
 .invite .details{max-width:390px;background:rgba(196,165,105,.28);box-shadow:inset 0 0 0 1px rgba(120,85,40,.25)}
+
+/* header music button */
+.musicbtn{display:inline-flex;align-items:center;gap:9px;font-family:var(--f-type);font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--bone);background:rgba(201,163,92,.12);border:1px solid var(--brass);border-radius:3px;padding:9px 14px;transition:background .15s}
+.musicbtn:hover{background:rgba(201,163,92,.22)}
+.musicbtn.on{background:rgba(201,163,92,.2)}
+.eq{display:inline-flex;gap:2px;align-items:flex-end;height:15px}
+.eq i{display:block;width:3px;height:30%;background:var(--brass);border-radius:1px}
+.musicbtn.on .eq i{animation:eq .9s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:-.3s}.eq i:nth-child(3){animation-delay:-.6s}.eq i:nth-child(4){animation-delay:-.15s}
+@keyframes eq{0%,100%{height:25%}50%{height:100%}}
 @media (max-width:640px){
   .radio-screen,.radio-screen iframe{width:72px;height:40px}
   .tools{position:static}
@@ -358,6 +368,7 @@ td ul{margin:0;padding-left:16px}
       <p class="sub">38 crime solving/puzzle games for Daddy to show off your amazing deduction skills (if you have any). Please go on and impress a fellow nerd.</p>
       <div class="hero-row">
         <button class="big-pick" id="pick" type="button">Pick tonight's case</button>
+        <button type="button" class="musicbtn" id="musicBtn" hidden aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="musicLbl">Play music</span></button>
         <button type="button" class="reinvite" id="reinvite">Read the invitation</button>
         <div class="progress"><div class="ptext"><b id="solvedN">0</b> of <span id="totalN">38</span> cases solved<span class="score" id="score"></span></div><div class="pbar"><i id="pfill"></i></div></div>
       </div>
@@ -879,13 +890,14 @@ bindEnv();
 
 /* background music (YouTube player; needs a click first because browsers block autoplay with sound) */
 const YT_ID="M9oiAEjt8r8";let ytp=null,ytReady=false,wantPlay=false;
-function setRadio(on){const b=$("radioBtn");b.setAttribute("aria-pressed",String(on));b.textContent=on?"Pause music":"Play music"}
+function setRadio(on){const b=$("radioBtn");b.setAttribute("aria-pressed",String(on));b.textContent=on?"Pause music":"Play music";const m=$("musicBtn");m.classList.toggle("on",on);m.setAttribute("aria-pressed",String(on));$("musicLbl").textContent=on?"Pause music":"Play music"}
 function startMusic(){wantPlay=true;if(ytReady){try{ytp.setVolume(45);ytp.playVideo()}catch(e){}}}
 window.onYouTubeIframeAPIReady=function(){
   ytp=new YT.Player("ytp",{videoId:YT_ID,width:96,height:54,playerVars:{autoplay:0,controls:0,loop:1,playlist:YT_ID,playsinline:1,rel:0},
-    events:{onReady:()=>{ytReady=true;$("radio").hidden=false;if(wantPlay)startMusic()},onStateChange:e=>setRadio(e.data===1),onError:()=>{$("radio").hidden=true}}})};
+    events:{onReady:()=>{ytReady=true;$("radio").hidden=false;$("musicBtn").hidden=false;if(wantPlay)startMusic()},onStateChange:e=>setRadio(e.data===1),onError:()=>{$("radio").hidden=true}}})};
 (function(){const t=document.createElement("script");t.src="https://www.youtube.com/iframe_api";t.async=true;document.head.appendChild(t)})();
-$("radioBtn").addEventListener("click",()=>{if(!ytReady)return;if(ytp.getPlayerState()===1)ytp.pauseVideo();else{ytp.setVolume(45);ytp.playVideo()}});
+function toggleMusic(){if(!ytReady)return;if(ytp.getPlayerState()===1)ytp.pauseVideo();else{ytp.setVolume(45);ytp.playVideo()}}
+$("radioBtn").addEventListener("click",toggleMusic);$("musicBtn").addEventListener("click",toggleMusic);
 </script>
 
 </body>
