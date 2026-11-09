@@ -11,7 +11,7 @@
 <title>Case Night Detective Club</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Special+Elite&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Caveat:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Special+Elite&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Caveat:wght@600;700&family=Libre+Franklin:wght@500;600;700&display=swap">
 <style>
 /* Layout: noir case room. Lamp-lit photo slideshow behind; smoked-glass hero and filter bar; pinned paper case files (paper / manila / sticky note) with red pins. One deliberate dark look. */
 :root{
@@ -276,6 +276,23 @@ td ul{margin:0;padding-left:16px}
 .env-img{display:block;width:100%;height:auto;pointer-events:none;user-select:none}
 .env-to{left:31%;top:73%;bottom:auto;transform:translate(-50%,-50%) rotate(-25deg);font-size:16px}
 .opening .env{animation:none;transform:scale(1.1) translateY(-14px) rotate(-3deg);opacity:0;transition:transform .7s ease,opacity .45s ease .3s}
+
+/* readable filter bar */
+.tools{--f-ui:"Libre Franklin","Helvetica Neue",Arial,sans-serif;position:relative;top:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;align-items:start;padding:14px 16px}
+.tools .grp{flex-wrap:wrap;gap:6px;align-items:center}
+.tools .grp>b{flex:0 0 72px;font-family:var(--f-ui);font-weight:700;font-size:12.5px;letter-spacing:.12em;color:var(--brass);margin-right:0}
+#g-level{order:1}#g-len{order:2}#g-mood{order:3;grid-column:1/-1}#g-kind{order:4}#g-acc{order:5}.trow{order:6}
+.tools .chip{font-family:var(--f-ui);font-weight:500;font-size:14px;letter-spacing:.01em;padding:5px 12px;border-radius:999px}
+.tools .chip[aria-pressed="true"]{font-weight:700}
+.trow{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;border-top:1px solid var(--edge);padding-top:12px}
+.tools .search{flex:0 1 260px;padding:6px 12px;border-radius:999px}
+.tools .search input{font-family:var(--f-ui);font-size:14.5px}
+.tools .clear{font-family:var(--f-ui);font-weight:600;font-size:13.5px;padding:6px 14px;border-radius:999px}
+.tools .count{font-family:var(--f-ui);font-size:14px}
+.tools .seg{border-radius:999px}
+.tools .seg button{font-family:var(--f-ui);font-weight:600;font-size:13.5px;padding:7px 14px}
+@media (max-width:900px){.tools{grid-template-columns:1fr}}
+@media (max-width:640px){.tools .grp>b{flex:0 0 100%;margin:2px 0 0}.tools .grp{flex-wrap:wrap;overflow:visible;gap:6px}.tools .chip{font-size:13.5px;padding:5px 11px}.tools .search{flex:1 1 100%}}
 @media (max-width:640px){
   .radio-screen,.radio-screen iframe{width:72px;height:40px}
   .tools{position:static}
@@ -348,10 +365,10 @@ td ul{margin:0;padding-left:16px}
     <div class="grp" id="g-len"><b>Time</b></div>
     <div class="grp" id="g-kind"><b>Type</b></div>
     <div class="grp" id="g-acc"><b>Access</b></div>
-    <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="var(--muted)" stroke-width="2.5"/><path d="M15 15l6 6" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="Search cases" aria-label="Search cases"></label>
+    <div class="trow"><label class="search"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="var(--muted)" stroke-width="2.5"/><path d="M15 15l6 6" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="Search cases" aria-label="Search cases"></label>
     <button class="clear" id="clear" type="button">Clear filters</button>
     <span class="count" id="count"></span>
-    <div class="seg" role="group" aria-label="View"><button type="button" id="v-board" aria-pressed="true">Case board</button><button type="button" id="v-log" aria-pressed="false">Case log</button><button type="button" id="v-reports" aria-pressed="false">Reports</button></div>
+    <div class="seg" role="group" aria-label="View"><button type="button" id="v-board" aria-pressed="true">Case board</button><button type="button" id="v-log" aria-pressed="false">Case log</button><button type="button" id="v-reports" aria-pressed="false">Reports</button></div></div>
   </nav>
   <div class="legend">
     <span><span class="lvl b">Beginner</span> guided, forgiving</span>
