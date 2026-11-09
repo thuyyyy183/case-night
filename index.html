@@ -322,6 +322,8 @@ td ul{margin:0;padding-left:16px}
     <div class="grp" id="g-level"><b>Level</b></div>
     <div class="grp" id="g-mood"><b>Mood</b></div>
     <div class="grp" id="g-len"><b>Time</b></div>
+    <div class="grp" id="g-kind"><b>Type</b></div>
+    <div class="grp" id="g-acc"><b>Access</b></div>
     <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="var(--muted)" stroke-width="2.5"/><path d="M15 15l6 6" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="Search cases" aria-label="Search cases"></label>
     <button class="clear" id="clear" type="button">Clear filters</button>
     <span class="count" id="count"></span>
@@ -333,7 +335,6 @@ td ul{margin:0;padding-left:16px}
     <span><span class="lvl a">Advanced</span> heavy notes, long or technical</span>
     <span><span class="recur" style="color:var(--dim);border-color:var(--dim)">Refreshes: Daily</span> new puzzles keep coming, so nothing to stamp</span>
     <span><span class="stat warn">Not in browser</span> needs a download</span>
-    <span><span class="stat unk">Not checked</span> site blocked the check</span>
   </div>
 
   <main>
@@ -364,6 +365,7 @@ td ul{margin:0;padding-left:16px}
     <div class="env-hint">Tap to open</div>
   </div>
 </div>
+<script>try{if(localStorage.getItem("cn-invite-day")===new Date().toLocaleDateString("en-CA"))document.getElementById("intro").hidden=true}catch(e){}</script>
 
 <div class="radio" id="radio" hidden>
   <div class="radio-screen"><div id="ytp"></div></div>
@@ -569,11 +571,11 @@ const ONCE=G.filter(g=>!g.rec);
 const LV={b:"Beginner",i:"Intermediate",a:"Advanced"};
 const MOODS=["Cozy","Noir","Spooky","Historical","Sci-fi","Logic grid","Techy"];
 const LENS={quick:"Quick",evening:"One evening",multi:"Multi-night"};
-const STAT={ok:["ok","Link OK"],warn:["warn","Not in browser"],unk:["unk","Not checked"]};
+const STAT={warn:["warn","Not in browser"]};
 const TIPS=["This makes for great foreplay.","Someone in this room is lying. Probably you, Daddy.","Lights off. Phones down. Notebook open.","Every clue matters. Especially the ones you ignored.","Can't decide? Let fate pull a file.","Trust no one. Except baby."];
-const SAY={Cozy:"Fireplace on. Slow burn tonight.",Noir:"It was raining. It's always raining.",Spooky:"Don't look behind you.",Historical:"The dead keep their secrets. Until tonight.","Sci-fi":"The future has crimes too.","Logic grid":"Pure logic. No mercy.",Techy:"The killer left a trail in the code.",b:"A gentle start. Don't get cocky.",i:"Now it gets interesting.",a:"This one has teeth.",quick:"In and out. Quick job.",evening:"Clear the evening.",multi:"A long case. Guard your notes."};
+const SAY={Cozy:"Fireplace on. Slow burn tonight.",Noir:"It was raining. It's always raining.",Spooky:"Don't look behind you.",Historical:"The dead keep their secrets. Until tonight.","Sci-fi":"The future has crimes too.","Logic grid":"Pure logic. No mercy.",Techy:"The killer left a trail in the code.",b:"A gentle start. Don't get cocky.",i:"Now it gets interesting.",a:"This one has teeth.",quick:"In and out. Quick job.",evening:"Clear the evening.",multi:"A long case. Guard your notes.",once:"One and done. Stamp it when it's cracked.",rec:"Fresh puzzles, every time.",ok:"No downloads. Just click and suffer.",warn:"Downloads ahead. Proceed with caution.",unk:"Unverified leads. Risky."};
 const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
-let st={lvl:null,mood:null,len:null,q:"",view:"board"};
+let st={lvl:null,mood:null,len:null,kind:null,acc:null,q:"",view:"board"};
 let played={};const tabs={};
 try{played=JSON.parse(localStorage.getItem("cn-played")||"{}")||{}}catch(e){played={}}
 try{const v=localStorage.getItem("cn-view2");if(v==="log"||v==="board"||v==="reports")st.view=v}catch(e){}
@@ -591,7 +593,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const ul=a=>"<ul>"+a.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>";
 const no=g=>String(G.indexOf(g)+1).padStart(2,"0");
 const tilt=id=>{let h=0;for(const ch of id)h=(h*31+ch.charCodeAt(0))|0;return ((Math.abs(h)%31)-15)/10};
-const statB=g=>{if(!g.st||g.st==="ok")return "";const s=STAT[g.st];return `<span class="stat ${s[0]}">${s[1]}</span>`};
+const statB=g=>{if(g.st!=="warn")return "";const s=STAT[g.st];return `<span class="stat ${s[0]}">${s[1]}</span>`};
 
 /* speech bubble */
 let tipI=0,tipTimer;
@@ -603,8 +605,11 @@ function mk(id,items,key){const g=$(id);[["All",null],...items].forEach(([lab,va
 mk("g-level",Object.entries(LV).map(([k,v])=>[v,k]),"lvl");
 mk("g-mood",MOODS.map(m=>[m,m]),"mood");
 mk("g-len",Object.entries(LENS).map(([k,v])=>[v,k]),"len");
+mk("g-kind",[["One-time","once"],["Refreshes","rec"]],"kind");
+mk("g-acc",[["Plays in browser","ok"],["Needs download","warn"]],"acc");
+{const T={b:"Guided, forgiving",i:"Real deduction, some notes",a:"Heavy notes, long or technical",once:"Finish it once, then stamp it solved",rec:"New puzzles keep coming, so nothing to stamp",ok:"Link checked, runs in your browser",warn:"Needs a download",unk:"The site blocked our link check"};document.querySelectorAll(".chip").forEach(c=>{if(T[c.dataset.v])c.title=T[c.dataset.v]})}
 
-function filtered(){const q=st.q.trim().toLowerCase();return G.filter(g=>(!st.lvl||g.lvl===st.lvl)&&(!st.mood||g.moods.includes(st.mood))&&(!st.len||g.lenK===st.len)&&(!q||(g.n+" "+g.set+" "+g.u+" "+g.moods.join(" ")).toLowerCase().includes(q)))}
+function filtered(){const q=st.q.trim().toLowerCase();return G.filter(g=>(!st.lvl||g.lvl===st.lvl)&&(!st.mood||g.moods.includes(st.mood))&&(!st.len||g.lenK===st.len)&&(!st.kind||(st.kind==="rec")===!!g.rec)&&(!st.acc||(g.st==="warn"?"warn":"ok")===st.acc)&&(!q||(g.n+" "+g.set+" "+g.u+" "+g.moods.join(" ")).toLowerCase().includes(q)))}
 
 function card(g,k){
   const t=tabs[g.id]||"case",on=x=>x===t;
@@ -632,7 +637,7 @@ function progress(){const n=ONCE.filter(g=>played[g.id]).length;$("solvedN").tex
 function render(){
   document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String((st[b.dataset.key]??"")===b.dataset.v)));
   $("v-board").setAttribute("aria-pressed",String(st.view==="board"));$("v-log").setAttribute("aria-pressed",String(st.view==="log"));$("v-reports").setAttribute("aria-pressed",String(st.view==="reports"));
-  $("clear").disabled=!(st.lvl||st.mood||st.len||st.q);
+  $("clear").disabled=!(st.lvl||st.mood||st.len||st.kind||st.acc||st.q);
   const list=filtered();
   $("count").textContent=`Showing ${list.length} of ${G.length}`;
   $("board").innerHTML=list.map(card).join("");
@@ -667,12 +672,12 @@ document.addEventListener("click",e=>{
     art.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.dataset.p===v));return}
   const pr=e.target.closest("[data-preset]");
   if(pr){const P={cozy:[{lvl:null,mood:"Cozy",len:null},"Fireside cases. Pour a drink."],spooky:[{lvl:null,mood:"Spooky",len:null},"Lights off. Don\'t let go of my hand."],warm:[{lvl:"b",mood:null,len:"quick"},"A quick one to warm up."],brain:[{lvl:"a",mood:null,len:null},"Clear the weekend. This one bites."]}[pr.dataset.preset];
-    Object.assign(st,P[0]);st.q="";$("q").value="";render();say(P[1]);$("board").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});return}
+    st.kind=st.acc=null;Object.assign(st,P[0]);st.q="";$("q").value="";render();say(P[1]);$("board").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});return}
   const rp=e.target.closest("[data-report]");if(rp&&!e.target.closest("#modal")){openReport(rp.dataset.report);return}
   const sv=e.target.closest("[data-solve]");if(sv){toggleSolve(sv.dataset.solve,sv);return}
   if(e.target.closest("[data-clear]"))clearAll();
 });
-function clearAll(){st.lvl=st.mood=st.len=null;st.q="";$("q").value="";render();say("All 38 files back on the board.")}
+function clearAll(){st.lvl=st.mood=st.len=st.kind=st.acc=null;st.q="";$("q").value="";render();say("All 38 files back on the board.")}
 $("clear").addEventListener("click",clearAll);
 $("q").addEventListener("input",e=>{st.q=e.target.value;render()});
 ["board","log","reports"].forEach(v=>$("v-"+v).addEventListener("click",()=>{st.view=v;try{localStorage.setItem("cn-view2",v)}catch(e){}render()}));
@@ -773,7 +778,7 @@ const intro=$("intro"),stage=$("stage");
 const STAGE0=stage.innerHTML;
 function showIntro(){intro.hidden=false;intro.classList.remove("bye","opening");stage.innerHTML=STAGE0;bindEnv()}
 function bindEnv(){$("env").addEventListener("click",openEnv,{once:true})}
-function openEnv(){startMusic();intro.classList.add("opening");const r=$("env").getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,10);
+function openEnv(){startMusic();try{localStorage.setItem("cn-invite-day",new Date().toLocaleDateString("en-CA"))}catch(e){}intro.classList.add("opening");const r=$("env").getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,10);
   setTimeout(showLetter,reduced?0:1250)}
 let dodges=0;
 function showLetter(){intro.classList.remove("opening");dodges=0;
