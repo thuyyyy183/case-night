@@ -220,6 +220,37 @@ td ul{margin:0;padding-left:16px}
 .radio-screen iframe{width:96px;height:54px;display:block;border:0}
 .radio-k{display:block;font-family:var(--f-type);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
 .radio-btn{font-family:var(--f-type);font-size:13px;background:none;border:0;color:var(--bone);padding:0;text-decoration:underline;text-underline-offset:3px}
+
+/* case reports */
+.rbtn,.redit{font-family:var(--f-type);font-size:12px;background:none;border:0;color:var(--ink);text-decoration:underline;text-underline-offset:3px;padding:2px 0}
+.cfoot .acts{display:flex;gap:10px;align-items:center}
+.report{background:var(--paper-hi);border-left:3px solid var(--blood);padding:7px 10px;font-size:13.5px;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.rhead{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-type);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--blood)}
+.rline{font-family:var(--f-type);font-size:12.5px;margin:3px 0 2px;color:var(--ink)}
+.stars-txt{color:var(--blood);letter-spacing:1px}
+.rnotes{margin:0;font-family:var(--f-hand);font-weight:600;font-size:19px;line-height:1.12;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.reports .rnotes{display:block;-webkit-line-clamp:unset}
+.rform{display:grid;gap:10px;margin-top:4px}
+.rform fieldset{border:0;margin:0;padding:0;min-width:0}
+.rform legend,.rform label>span{font-family:var(--f-type);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blood);margin-bottom:4px;padding:0;display:block}
+.pills{display:flex;flex-wrap:wrap;gap:5px}
+.pill{font-family:var(--f-type);font-size:13px;border:1px solid var(--ink-soft);background:transparent;color:var(--ink);border-radius:3px;padding:4px 9px}
+.pill[aria-pressed="true"]{background:var(--ink);color:var(--paper-hi);border-color:var(--ink)}
+.starbtn{font-size:26px;line-height:1;background:none;border:0;padding:0 2px;color:#c9b48c}
+.starbtn[aria-pressed="true"]{color:var(--blood)}
+.rform input[type=date],.rform textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--paper-hi);border:1px solid var(--rule);border-radius:2px;padding:7px 9px}
+.rform textarea{font-family:var(--f-hand);font-weight:600;font-size:21px;line-height:1.15;min-height:110px;resize:vertical}
+.rdel{font-family:var(--f-type);font-size:12.5px;background:none;border:0;color:var(--blood);text-decoration:underline;margin-left:auto}
+.score{font-family:var(--f-type);font-size:12.5px;color:var(--brass);margin-left:6px;white-space:nowrap}
+.reports{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px 16px;margin-top:20px;align-items:start}
+.reports .rcard{position:relative;color:var(--ink);background:var(--paper);background-image:linear-gradient(170deg,rgba(255,255,255,.22),rgba(0,0,0,.05));border-radius:2px;padding:16px 16px 12px;box-shadow:0 18px 34px var(--shadow);display:flex;flex-direction:column;gap:6px}
+.reports .rcard:nth-child(3n+2){background-color:var(--manila)}.reports .rcard:nth-child(3n){background-color:var(--note)}
+.rcard h3{margin:0;font-family:var(--f-display);font-weight:700;font-size:20px;line-height:1.15}
+.rcard h3 a{color:var(--ink);text-decoration:none}
+.rtools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--smoke);border:1px solid var(--edge);border-radius:6px;padding:8px 12px;margin-top:20px;color:var(--dim);font-size:13.5px;grid-column:1/-1}
+.rtools button{font-family:var(--f-type);font-size:12.5px;border:1px solid var(--edge);background:transparent;color:var(--bone);border-radius:3px;padding:4px 10px}
+.rempty{grid-column:1/-1;background:var(--paper);color:var(--ink);border-radius:2px;padding:22px;text-align:center;font-family:var(--f-type)}
+.tdrep{font-family:var(--f-type);font-size:11.5px;margin-top:4px;color:var(--ink-soft)}
 @media (max-width:640px){
   .radio-screen,.radio-screen iframe{width:72px;height:40px}
   .tools{position:static}
@@ -275,7 +306,7 @@ td ul{margin:0;padding-left:16px}
       <div class="hero-row">
         <button class="big-pick" id="pick" type="button">Pick tonight's case</button>
         <button type="button" class="reinvite" id="reinvite">Read the invitation</button>
-        <div class="progress"><div class="ptext"><b id="solvedN">0</b> of <span id="totalN">38</span> cases solved</div><div class="pbar"><i id="pfill"></i></div></div>
+        <div class="progress"><div class="ptext"><b id="solvedN">0</b> of <span id="totalN">38</span> cases solved<span class="score" id="score"></span></div><div class="pbar"><i id="pfill"></i></div></div>
       </div>
     </div>
     <div class="presets" aria-label="Quick plans"><b>Quick plans</b><div>
@@ -293,7 +324,7 @@ td ul{margin:0;padding-left:16px}
     <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="var(--muted)" stroke-width="2.5"/><path d="M15 15l6 6" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="Search cases" aria-label="Search cases"></label>
     <button class="clear" id="clear" type="button">Clear filters</button>
     <span class="count" id="count"></span>
-    <div class="seg" role="group" aria-label="View"><button type="button" id="v-board" aria-pressed="true">Case board</button><button type="button" id="v-log" aria-pressed="false">Case log</button></div>
+    <div class="seg" role="group" aria-label="View"><button type="button" id="v-board" aria-pressed="true">Case board</button><button type="button" id="v-log" aria-pressed="false">Case log</button><button type="button" id="v-reports" aria-pressed="false">Reports</button></div>
   </nav>
   <div class="legend">
     <span><span class="lvl b">Beginner</span> guided, forgiving</span>
@@ -308,9 +339,10 @@ td ul{margin:0;padding-left:16px}
     <div id="logwrap" class="log" hidden><table>
       <thead><tr><th style="width:210px">Case</th><th style="width:150px">Setting</th><th>Level</th><th>Time</th><th style="width:230px">What makes it unique</th><th style="width:210px">Pros</th><th style="width:210px">Cons</th><th style="width:190px">For two</th><th>Solved</th></tr></thead>
       <tbody id="rows"></tbody></table></div>
+    <div id="reports" class="reports" hidden></div>
     <div id="empty" class="empty" hidden>No cases match these clues. <button class="clear" type="button" data-clear>Clear filters</button></div>
   </main>
-  <p class="foot">All games are free to play in a browser unless a badge or the cons say otherwise. Lengths marked "est." are estimates. Solved stamps are saved only in this browser.</p>
+  <p class="foot">All games are free to play in a browser unless a badge or the cons say otherwise. Lengths marked "est." are estimates. Solved stamps and case reports are saved only in this browser, on this device.</p>
 </div>
 
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
@@ -539,7 +571,14 @@ const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
 let st={lvl:null,mood:null,len:null,q:"",view:"board"};
 let played={};const tabs={};
 try{played=JSON.parse(localStorage.getItem("cn-played")||"{}")||{}}catch(e){played={}}
-try{const v=localStorage.getItem("cn-view2");if(v==="log"||v==="board")st.view=v}catch(e){}
+try{const v=localStorage.getItem("cn-view2");if(v==="log"||v==="board"||v==="reports")st.view=v}catch(e){}
+let reports={};try{reports=JSON.parse(localStorage.getItem("cn-reports")||"{}")||{}}catch(e){reports={}}
+const saveReports=()=>{try{localStorage.setItem("cn-reports",JSON.stringify(reports))}catch(e){}};
+const WHO={daddy:"Daddy cracked it",baby:"Baby cracked it",team:"Team effort",nobody:"Nobody (we peeked)"};
+const PAIN=["Painless","A little","Ouch","Migraine","Brain melted"];
+const starsTxt=n=>"★".repeat(n||0)+"☆".repeat(5-(n||0));
+const fmtDate=d=>{try{return new Date(d+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}catch(e){return d}};
+function repLine(rep){return [rep.rating?`<span class="stars-txt">${starsTxt(rep.rating)}</span>`:"",rep.who?WHO[rep.who]:"",rep.pain?"Brain: "+PAIN[rep.pain-1]:""].filter(Boolean).join(" · ")}
 const save=()=>{try{localStorage.setItem("cn-played",JSON.stringify(played))}catch(e){}};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -575,17 +614,18 @@ function card(g,k){
     <div class="panel${on("pc")?" on":""}" data-p="pc"><h4 class="pro">Pros</h4>${ul(g.p)}<h4 class="con">Cons</h4>${ul(g.c)}</div>
     <div class="panel${on("two")?" on":""}" data-p="two"><p class="two">${esc(g.t)}</p></div>
   </div>
-  <div class="cfoot"><span class="tag">${LENS[g.lenK]}</span><button type="button" class="solve" data-solve="${g.id}" aria-pressed="${!!played[g.id]}">${played[g.id]?"Solved ✓":"Mark solved"}</button></div>
+  ${played[g.id]&&reports[g.id]?`<div class="report"><div class="rhead"><span>Case report</span><span>${esc(fmtDate(reports[g.id].date))}</span></div><div class="rline">${repLine(reports[g.id])}</div>${reports[g.id].notes?`<p class="rnotes">${esc(reports[g.id].notes)}</p>`:""}<button type="button" class="redit" data-report="${g.id}">Edit report</button></div>`:""}
+  <div class="cfoot"><span class="tag">${LENS[g.lenK]}</span><span class="acts">${played[g.id]&&!reports[g.id]?`<button type="button" class="rbtn" data-report="${g.id}">Write report</button>`:""}<button type="button" class="solve" data-solve="${g.id}" aria-pressed="${!!played[g.id]}">${played[g.id]?"Solved ✓":"Mark solved"}</button></span></div>
   <span class="stamp" aria-hidden="true">SOLVED</span></article>`}
 
 function row(g){return `<tr class="${played[g.id]?"done":""}" data-id="${g.id}"><td><div class="tcase">Case ${no(g)} ${g.new?'<span class="new">NEW</span>':""}</div><div class="tname"><a href="${g.url}" target="_blank" rel="noopener">${esc(g.n)} ↗</a></div>${statB(g)}</td>
   <td>${esc(g.set)}</td><td><span class="lvl ${g.lvl}">${LV[g.lvl]}</span></td><td>${esc(g.len)}</td><td>${esc(g.u)}</td><td>${ul(g.p)}</td><td>${ul(g.c)}</td><td>${esc(g.t)}</td>
-  <td><button type="button" class="solve" data-solve="${g.id}" aria-pressed="${!!played[g.id]}">${played[g.id]?"Solved ✓":"Mark solved"}</button></td></tr>`}
+  <td><button type="button" class="solve" data-solve="${g.id}" aria-pressed="${!!played[g.id]}">${played[g.id]?"Solved ✓":"Mark solved"}</button>${played[g.id]?(reports[g.id]?`<div class="tdrep">${repLine(reports[g.id])}</div><button type="button" class="redit" data-report="${g.id}">Edit report</button>`:`<div><button type="button" class="rbtn" data-report="${g.id}">Write report</button></div>`):""}</td></tr>`}
 
-function progress(){const n=G.filter(g=>played[g.id]).length;$("solvedN").textContent=n;$("totalN").textContent=G.length;$("pfill").style.width=(n/G.length*100)+"%"}
+function progress(){const n=G.filter(g=>played[g.id]).length;$("solvedN").textContent=n;$("totalN").textContent=G.length;$("pfill").style.width=(n/G.length*100)+"%";const rs=Object.entries(reports).filter(([id])=>played[id]).map(([,v])=>v);const d=rs.filter(x=>x.who==="daddy").length,b=rs.filter(x=>x.who==="baby").length;$("score").textContent=rs.length?` · Daddy ${d} – Baby ${b}`:""}
 function render(){
   document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",String((st[b.dataset.key]??"")===b.dataset.v)));
-  $("v-board").setAttribute("aria-pressed",String(st.view==="board"));$("v-log").setAttribute("aria-pressed",String(st.view==="log"));
+  $("v-board").setAttribute("aria-pressed",String(st.view==="board"));$("v-log").setAttribute("aria-pressed",String(st.view==="log"));$("v-reports").setAttribute("aria-pressed",String(st.view==="reports"));
   $("clear").disabled=!(st.lvl||st.mood||st.len||st.q);
   const list=filtered();
   $("count").textContent=`Showing ${list.length} of ${G.length}`;
@@ -593,7 +633,8 @@ function render(){
   $("rows").innerHTML=list.map(row).join("");
   $("board").hidden=st.view!=="board"||!list.length;
   $("logwrap").hidden=st.view!=="log"||!list.length;
-  $("empty").hidden=!!list.length;
+  $("empty").hidden=!!list.length||st.view==="reports";
+  $("reports").hidden=st.view!=="reports";if(st.view==="reports")renderReports();
   progress();
 }
 
@@ -607,7 +648,7 @@ function toggleSolve(id,btn){
   document.querySelectorAll(`[data-id="${id}"]`).forEach(el=>el.classList.toggle("done",played[id]));
   document.querySelectorAll(`[data-solve="${id}"]`).forEach(b=>{b.setAttribute("aria-pressed",String(played[id]));b.textContent=played[id]?"Solved ✓":"Mark solved"});
   progress();
-  if(played[id]){const r=btn.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2);say("Case closed. Another one for the files.")}
+  if(played[id]){const r=btn.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2);say("Case closed. Now write the report.");setTimeout(()=>openReport(id),reduced?0:650)}else setTimeout(render,reduced?0:250)
 }
 
 /* events */
@@ -621,14 +662,51 @@ document.addEventListener("click",e=>{
   const pr=e.target.closest("[data-preset]");
   if(pr){const P={cozy:[{lvl:null,mood:"Cozy",len:null},"Fireside cases. Pour a drink."],spooky:[{lvl:null,mood:"Spooky",len:null},"Lights off. Don\'t let go of my hand."],warm:[{lvl:"b",mood:null,len:"quick"},"A quick one to warm up."],brain:[{lvl:"a",mood:null,len:null},"Clear the weekend. This one bites."]}[pr.dataset.preset];
     Object.assign(st,P[0]);st.q="";$("q").value="";render();say(P[1]);$("board").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});return}
+  const rp=e.target.closest("[data-report]");if(rp&&!e.target.closest("#modal")){openReport(rp.dataset.report);return}
   const sv=e.target.closest("[data-solve]");if(sv){toggleSolve(sv.dataset.solve,sv);return}
   if(e.target.closest("[data-clear]"))clearAll();
 });
 function clearAll(){st.lvl=st.mood=st.len=null;st.q="";$("q").value="";render();say("All 38 files back on the board.")}
 $("clear").addEventListener("click",clearAll);
 $("q").addEventListener("input",e=>{st.q=e.target.value;render()});
-["board","log"].forEach(v=>$("v-"+v).addEventListener("click",()=>{st.view=v;try{localStorage.setItem("cn-view2",v)}catch(e){}render()}));
+["board","log","reports"].forEach(v=>$("v-"+v).addEventListener("click",()=>{st.view=v;try{localStorage.setItem("cn-view2",v)}catch(e){}render()}));
 $("mochi").addEventListener("click",e=>{tipI=(tipI+1)%TIPS.length;say(TIPS[tipI]);burst(e.clientX,e.clientY,8)});
+
+/* case report form */
+function openReport(id){
+  const g=G.find(x=>x.id===id);if(!g)return;
+  const old=reports[id]||{};const today=new Date();const iso=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  const stv={who:old.who||"",rating:old.rating||0,pain:old.pain||0};
+  lastFocus=document.activeElement;const m=$("modal"),f=$("file");m.dataset.kind="report";
+  f.innerHTML=`<div class="kicker">Case report · Case ${no(g)}</div><h2 id="mTitle">${esc(g.n)}</h2>
+  <form class="rform" id="rform">
+    <fieldset><legend>Who cracked it first?</legend><div class="pills" id="rp-who">${Object.entries(WHO).map(([k,v])=>`<button type="button" class="pill" data-v="${k}" aria-pressed="${stv.who===k}">${v.replace(" cracked it","")}</button>`).join("")}</div></fieldset>
+    <fieldset><legend>Case rating</legend><div class="pills" id="rp-rate">${[1,2,3,4,5].map(n=>`<button type="button" class="starbtn" data-v="${n}" aria-label="${n} out of 5" aria-pressed="${n<=stv.rating}">★</button>`).join("")}</div></fieldset>
+    <fieldset><legend>How much did it hurt (your brain)?</legend><div class="pills" id="rp-pain">${PAIN.map((p,i)=>`<button type="button" class="pill" data-v="${i+1}" aria-pressed="${stv.pain===i+1}">${p}</button>`).join("")}</div></fieldset>
+    <label><span>Date played</span><input type="date" id="rp-date" value="${esc(old.date||iso)}"></label>
+    <label><span>Wrap-up notes</span><textarea id="rp-notes" placeholder="Best moment, wildest theory, who blamed whom...">${esc(old.notes||"")}</textarea></label>
+    <div class="mbtns"><button type="submit" style="background:var(--blood);color:var(--bone);border:0;box-shadow:0 3px 0 #4a0d11">File report</button><button type="button" data-close>${old.date?"Cancel":"Skip for now"}</button>${reports[id]?'<button type="button" class="rdel" id="rp-del">Delete report</button>':""}</div>
+  </form>`;
+  const grp=(gid,key,multi)=>$(gid).addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b)return;const v=key==="who"?b.dataset.v:+b.dataset.v;stv[key]=stv[key]===v&&!multi?(key==="who"?"":0):v;
+    $(gid).querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed",String(multi?(+x.dataset.v<=stv[key]):(String(stv[key])===x.dataset.v)))) });
+  grp("rp-who","who",false);grp("rp-rate","rating",true);grp("rp-pain","pain",false);
+  $("rform").addEventListener("submit",e=>{e.preventDefault();reports[id]={who:stv.who,rating:stv.rating,pain:stv.pain,date:$("rp-date").value||iso,notes:$("rp-notes").value.trim(),ts:Date.now()};saveReports();
+    const r=f.getBoundingClientRect();burst(r.left+r.width/2,r.top+30,14);say("Report filed. The case is officially closed.");closeModal();render()});
+  if($("rp-del"))$("rp-del").addEventListener("click",()=>{delete reports[id];saveReports();closeModal();render()});
+  m.hidden=false;requestAnimationFrame(()=>m.classList.add("open"));setTimeout(()=>{const t=$("rp-notes");if(t)t.focus({preventScroll:true})},60);
+}
+function renderReports(){
+  const ids=Object.keys(reports).filter(id=>played[id]&&G.some(g=>g.id===id)).sort((a,b)=>(reports[b].date||"").localeCompare(reports[a].date||"")||reports[b].ts-reports[a].ts);
+  const unrep=G.filter(g=>played[g.id]&&!reports[g.id]);
+  let h=`<div class="rtools"><span>${ids.length} report${ids.length===1?"":"s"} filed${unrep.length?` · ${unrep.length} solved case${unrep.length===1?"":"s"} still need${unrep.length===1?"s":""} one`:""}</span>${ids.length?'<button type="button" id="rcopy">Copy all reports</button>':""}</div>`;
+  if(!ids.length)h+=`<div class="rempty">No reports filed yet. Solve a case, then write the wrap-up.</div>`;
+  h+=ids.map(id=>{const g=G.find(x=>x.id===id),rep=reports[id];return `<article class="rcard"><span class="pin" aria-hidden="true"></span><div class="rhead"><span>Case ${no(g)} · report</span><span>${esc(fmtDate(rep.date))}</span></div><h3><a href="${g.url}" target="_blank" rel="noopener">${esc(g.n)} ↗</a></h3><div class="rline">${repLine(rep)||"No verdict recorded"}</div>${rep.notes?`<p class="rnotes">${esc(rep.notes)}</p>`:""}<div><button type="button" class="redit" data-report="${id}">Edit report</button></div></article>`}).join("");
+  h+=unrep.map(g=>`<article class="rcard"><span class="pin" aria-hidden="true"></span><div class="rhead"><span>Case ${no(g)}</span><span>Solved, no report</span></div><h3>${esc(g.n)}</h3><div><button type="button" class="rbtn" data-report="${g.id}">Write report</button></div></article>`).join("");
+  $("reports").innerHTML=h;
+  const c=$("rcopy");if(c)c.addEventListener("click",()=>{const txt=ids.map(id=>{const g=G.find(x=>x.id===id),r=reports[id];return `${g.n} (${fmtDate(r.date)})\n${[r.rating?starsTxt(r.rating):"",r.who?WHO[r.who]:"",r.pain?"Brain: "+PAIN[r.pain-1]:""].filter(Boolean).join(" · ")}${r.notes?"\n"+r.notes:""}`}).join("\n\n");
+    const done=()=>{c.textContent="Copied";setTimeout(()=>c.textContent="Copy all reports",1500)};
+    try{navigator.clipboard.writeText(txt).then(done,()=>{c.textContent="Copy failed"})}catch(e){c.textContent="Copy failed"}});
+}
 
 /* pick + modal */
 let busy=false,lastFocus=null;
@@ -645,7 +723,7 @@ function pick(){
     prev=cards[Math.floor(Math.random()*cards.length)];prev.classList.add("glow");i++;setTimeout(step,70+i*14)})();
 }
 function openModal(g){
-  lastFocus=document.activeElement;
+  lastFocus=document.activeElement;$("modal").dataset.kind="pick";
   const f=$("file");
   if(!g){f.innerHTML=`<div class="kicker">Hmm…</div><h2 id="mTitle">No unsolved cases match</h2><p>You've solved everything that fits these filters. Clear a filter or un-stamp a case to play it again.</p><div class="mbtns"><button type="button" data-close>Close</button></div>`}
   else{f.innerHTML=`<div class="kicker">Tonight's case is…</div><h2 id="mTitle">${esc(g.n)}</h2>
@@ -658,7 +736,7 @@ function openModal(g){
 }
 function closeModal(){const m=$("modal");m.classList.remove("open");setTimeout(()=>{m.hidden=true},reduced?0:250);if(lastFocus)lastFocus.focus()}
 $("pick").addEventListener("click",pick);
-$("modal").addEventListener("click",e=>{if(e.target.id==="modal"||e.target.closest("[data-close]"))closeModal();else if(e.target.closest("[data-again]")){closeModal();setTimeout(pick,reduced?0:280)}});
+$("modal").addEventListener("click",e=>{if(e.target.id==="modal"&&$("modal").dataset.kind==="report")return;if(e.target.id==="modal"||e.target.closest("[data-close]")){closeModal();if($("modal").dataset.kind==="report")render()}else if(e.target.closest("[data-again]")){closeModal();setTimeout(pick,reduced?0:280)}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("modal").hidden)closeModal()});
 
 /* mascot eyes follow */
