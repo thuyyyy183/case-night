@@ -640,7 +640,7 @@ function say(t){const b=$("bubble");b.textContent=t;b.classList.remove("pop");vo
 tipTimer=setInterval(()=>{tipI=(tipI+1)%TIPS.length;say(TIPS[tipI])},9000);
 
 /* filter chips */
-function mk(id,items,key){const g=$(id);[["All",null],...items].forEach(([lab,val])=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=lab;b.dataset.key=key;b.dataset.v=val??"";g.appendChild(b)})}
+function mk(id,items,key){const g=$(id);items.forEach(([lab,val])=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=lab;b.dataset.key=key;b.dataset.v=val??"";g.appendChild(b)})}
 mk("g-level",Object.entries(LV).map(([k,v])=>[v,k]),"lvl");
 mk("g-mood",MOODS.map(m=>[m,m]),"mood");
 mk("g-len",Object.entries(LENS).map(([k,v])=>[v,k]),"len");
@@ -704,7 +704,7 @@ function toggleSolve(id,btn){
 /* events */
 document.addEventListener("click",e=>{
   const c=e.target.closest(".chip");
-  if(c){const k=c.dataset.key,v=c.dataset.v||null;st[k]=v;render();if(v&&SAY[v])say(SAY[v]);return}
+  if(c){const k=c.dataset.key,v=c.dataset.v;const on=st[k]!==v;st[k]=on?v:null;render();if(on&&SAY[v])say(SAY[v]);return}
   const tb=e.target.closest("[data-tab]");
   if(tb){const art=tb.closest(".case");const v=tb.dataset.tab;tabs[art.dataset.id]=v;
     art.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",String(x.dataset.tab===v)));
