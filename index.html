@@ -914,6 +914,9 @@ $("musicBtn").hidden=false;
 $("radioBtn").addEventListener("click",e=>{e.stopPropagation();toggleMusic()});$("musicBtn").addEventListener("click",e=>{e.stopPropagation();toggleMusic()});
 const kick=e=>{if(e.target.closest&&e.target.closest("#musicBtn,#radioBtn"))return;if(bgm.paused&&!musicOff)startMusic();document.removeEventListener("pointerdown",kick,true);document.removeEventListener("keydown",kick,true)};
 document.addEventListener("pointerdown",kick,true);document.addEventListener("keydown",kick,true);
+bgm.preload="auto";startMusic();
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&bgm.paused&&!musicOff)startMusic()});
+bgm.addEventListener("ended",()=>{bgm.currentTime=0;startMusic()});
 </script>
 
 </body>
