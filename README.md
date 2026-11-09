@@ -1,3 +1,3 @@
 # Case Night Detective Club
 
-A cute mini site of free on-screen whodunnits for two.
+A cute mini site of on-screen puzzles for two.
