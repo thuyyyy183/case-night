@@ -272,9 +272,13 @@ td ul{margin:0;padding-left:16px}
 /* photo envelope */
 .env{width:min(400px,84vw);aspect-ratio:auto;transform:none;filter:drop-shadow(0 26px 28px rgba(0,0,0,.65)) drop-shadow(0 4px 5px rgba(0,0,0,.35));animation:floatImg 3.4s ease-in-out infinite}
 .env:hover{transform:scale(1.04)}
-@keyframes floatImg{50%{transform:translateY(-9px) rotate(1deg)}}
+@keyframes floatImg{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-16px) rotate(1.6deg)}}
+.env::after{content:"";position:absolute;left:18%;right:18%;bottom:-34px;height:28px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(0,0,0,.55),transparent 70%);animation:groundShadow 3.4s ease-in-out infinite;pointer-events:none}
+@keyframes groundShadow{0%,100%{transform:translateY(0) scale(1);opacity:.9}50%{transform:translateY(16px) scale(.8);opacity:.5}}
+.opening .env::after{opacity:0}
+@media (prefers-reduced-motion:reduce){.env{animation:floatImg 5s ease-in-out infinite}.env::after{animation:groundShadow 5s ease-in-out infinite}}
 .env-img{display:block;width:100%;height:auto;pointer-events:none;user-select:none}
-.env-to{left:31%;top:73%;bottom:auto;transform:translate(-50%,-50%) rotate(-25deg);font-size:16px}
+.env-to{left:57.5%;top:66%;bottom:auto;transform:translate(-50%,-50%) rotate(-25deg);font-size:16px}
 .opening .env{animation:none;transform:scale(1.1) translateY(-14px) rotate(-3deg);opacity:0;transition:transform .7s ease,opacity .45s ease .3s}
 
 /* readable filter bar */
