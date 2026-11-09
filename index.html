@@ -688,7 +688,7 @@ document.addEventListener("click",e=>{
     art.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",String(x.dataset.tab===v)));
     art.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.dataset.p===v));return}
   const pr=e.target.closest("[data-preset]");
-  if(pr){const P={cozy:[{lvl:null,mood:"Cozy",len:null},"Fireside cases. Pour a Whiskey Sour."],spooky:[{lvl:null,mood:"Spooky",len:null},"Lights off. Don\'t let go of my hand."],warm:[{lvl:"b",mood:null,len:"quick"},"A quick one to warm up."],brain:[{lvl:"a",mood:null,len:null},"Clear the weekend. This one bites."]}[pr.dataset.preset];
+  if(pr){const P={cozy:[{lvl:null,mood:"Cozy",len:null},"Fireside cases. Pour a Whiskey Sour."],spooky:[{lvl:null,mood:"Spooky",len:null},"Lights off. Don\'t let go of my hand."],warm:[{lvl:"b",mood:null,len:"quick"},"It's like Krillion, but for deduction skills."],brain:[{lvl:"a",mood:null,len:null},"Clear the weekend. This one bites."]}[pr.dataset.preset];
     st.kind=st.acc=null;Object.assign(st,P[0]);st.q="";$("q").value="";render();say(P[1]);$("board").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});return}
   const rp=e.target.closest("[data-report]");if(rp&&!e.target.closest("#modal")){openReport(rp.dataset.report);return}
   const sv=e.target.closest("[data-solve]");if(sv){toggleSolve(sv.dataset.solve,sv);return}
