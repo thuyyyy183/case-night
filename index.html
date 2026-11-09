@@ -319,6 +319,15 @@ td ul{margin:0;padding-left:16px}
 .invite{clip-path:polygon(3.50% 2.42%,6.34% 0.29%,9.18% 0.88%,12.01% 0.11%,14.85% 0.04%,17.69% 2.14%,20.53% 0.84%,23.37% 0.29%,26.21% 3.38%,29.04% 0.91%,31.88% 0.20%,34.72% 0.44%,37.56% 0.13%,40.40% 0.78%,43.24% 0.95%,46.07% 1.27%,48.91% 0.72%,51.75% 0.80%,54.59% 0.75%,57.43% 0.06%,60.26% 1.90%,63.10% 0.13%,65.94% 0.83%,68.78% 0.48%,71.62% 0.35%,74.46% 0.84%,77.29% 0.22%,80.13% 0.21%,82.97% 1.29%,85.81% 0.72%,88.65% 1.10%,91.49% 1.94%,94.32% 0.35%,97.16% 1.23%,99.50% 0.00%,99.37% 3.33%,99.27% 6.67%,99.61% 10.00%,99.58% 13.33%,98.56% 16.67%,99.65% 20.00%,99.18% 23.33%,99.92% 26.67%,99.00% 30.00%,97.59% 33.33%,98.41% 36.67%,98.45% 40.00%,99.98% 43.33%,98.91% 46.67%,99.57% 50.00%,99.82% 53.33%,99.27% 56.67%,98.60% 60.00%,99.20% 63.33%,98.54% 66.67%,99.52% 70.00%,99.03% 73.33%,98.78% 76.67%,98.75% 80.00%,100.00% 83.33%,99.97% 86.67%,98.59% 90.00%,97.08% 93.33%,98.48% 96.67%,100.00% 97.05%,97.06% 98.93%,94.12% 99.33%,91.18% 99.63%,88.24% 99.41%,85.29% 99.24%,82.35% 99.72%,79.41% 98.61%,76.47% 99.39%,73.53% 99.83%,70.59% 99.53%,67.65% 99.68%,64.71% 99.90%,61.76% 99.68%,58.82% 97.26%,55.88% 99.06%,52.94% 99.81%,50.00% 99.20%,47.06% 98.90%,44.12% 99.73%,41.18% 99.40%,38.24% 99.35%,35.29% 99.06%,32.35% 99.86%,29.41% 99.52%,26.47% 99.65%,23.53% 99.37%,20.59% 99.61%,17.65% 98.71%,14.71% 98.79%,11.76% 99.93%,8.82% 98.83%,5.88% 98.70%,2.94% 99.77%,0.36% 100.00%,0.10% 96.68%,1.68% 93.36%,1.33% 90.04%,0.72% 86.71%,1.69% 83.39%,1.22% 80.07%,0.50% 76.75%,0.98% 73.43%,3.29% 70.11%,0.85% 66.79%,0.27% 63.46%,0.14% 60.14%,1.01% 56.82%,0.40% 53.50%,1.51% 50.18%,1.01% 46.86%,0.71% 43.54%,0.89% 40.21%,0.35% 36.89%,0.41% 33.57%,1.14% 30.25%,0.54% 26.93%,0.12% 23.61%,1.70% 20.29%,0.12% 16.96%,0.45% 13.64%,1.50% 10.32%,0.60% 5.20%,1.80% 3.10%,2.60% 1.20%);padding:36px 32px 30px;box-shadow:none}
 .invite::before{display:none}
 .stage:has(.invite){filter:drop-shadow(0 0 1px rgba(70,42,14,.85)) drop-shadow(0 26px 32px rgba(0,0,0,.65))}
+
+/* embedded music widget */
+.radio{padding:8px 14px 8px 10px;gap:11px}
+.vinyl{flex:none;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle,var(--blood) 0 17%,#1a120c 18% 22%,transparent 23%),repeating-radial-gradient(circle,#15100b 0 2px,#2a211a 2px 3px);box-shadow:0 0 0 1px var(--edge),0 3px 8px rgba(0,0,0,.5)}
+.radio.on .vinyl{animation:spin 3.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.radio-t{display:block;font-family:var(--f-display);font-style:italic;font-size:14.5px;color:var(--bone);margin:1px 0 2px;white-space:nowrap}
+@media (max-width:640px){.radio-t{font-size:13px}.vinyl{width:32px;height:32px}}
+@media (prefers-reduced-motion:reduce){.radio.on .vinyl{animation:spin 6s linear infinite}}
 @media (max-width:640px){
   .radio-screen,.radio-screen iframe{width:72px;height:40px}
   .tools{position:static}
@@ -428,10 +437,11 @@ td ul{margin:0;padding-left:16px}
 </div>
 <script>try{if(localStorage.getItem("cn-invite-day")===new Date().toLocaleDateString("en-CA"))document.getElementById("intro").hidden=true}catch(e){}</script>
 
-<div class="radio" id="radio" hidden>
-  <div class="radio-screen"><div id="ytp"></div></div>
-  <div><span class="radio-k">Now playing</span><button type="button" id="radioBtn" class="radio-btn" aria-pressed="false">Play music</button></div>
+<div class="radio" id="radio">
+  <span class="vinyl" aria-hidden="true"></span>
+  <div><span class="radio-k">Now playing</span><span class="radio-t">I have great taste in music</span><button type="button" id="radioBtn" class="radio-btn" aria-pressed="false">Play music</button></div>
 </div>
+<audio id="bgm" src="audio/theme.mp3" loop preload="none"></audio>
 
 <script>
 const G=[
@@ -893,16 +903,17 @@ function accept(e){const r=e.currentTarget.getBoundingClientRect();burst(r.left+
 $("reinvite").addEventListener("click",showIntro);
 bindEnv();
 
-/* background music (YouTube player; needs a click first because browsers block autoplay with sound) */
-const YT_ID="M9oiAEjt8r8";let ytp=null,ytReady=false,wantPlay=false;
-function setRadio(on){const b=$("radioBtn");b.setAttribute("aria-pressed",String(on));b.textContent=on?"Pause music":"Play music";const m=$("musicBtn");m.classList.toggle("on",on);m.setAttribute("aria-pressed",String(on));$("musicLbl").textContent=on?"Pause music":"Play music"}
-function startMusic(){wantPlay=true;if(ytReady){try{ytp.setVolume(45);ytp.playVideo()}catch(e){}}}
-window.onYouTubeIframeAPIReady=function(){
-  ytp=new YT.Player("ytp",{videoId:YT_ID,width:96,height:54,playerVars:{autoplay:0,controls:0,loop:1,playlist:YT_ID,playsinline:1,rel:0},
-    events:{onReady:()=>{ytReady=true;$("radio").hidden=false;$("musicBtn").hidden=false;if(wantPlay)startMusic()},onStateChange:e=>setRadio(e.data===1),onError:()=>{$("radio").hidden=true}}})};
-(function(){const t=document.createElement("script");t.src="https://www.youtube.com/iframe_api";t.async=true;document.head.appendChild(t)})();
-function toggleMusic(){if(!ytReady)return;if(ytp.getPlayerState()===1)ytp.pauseVideo();else{ytp.setVolume(45);ytp.playVideo()}}
-$("radioBtn").addEventListener("click",toggleMusic);$("musicBtn").addEventListener("click",toggleMusic);
+/* background music: embedded track, loops; starts on the first tap because browsers block sound until then */
+const bgm=$("bgm");bgm.volume=.45;
+let musicOff=false;try{musicOff=localStorage.getItem("cn-music")==="off"}catch(e){}
+function setRadio(on){const b=$("radioBtn");b.setAttribute("aria-pressed",String(on));b.textContent=on?"Pause":"Play";const m=$("musicBtn");m.classList.toggle("on",on);m.setAttribute("aria-pressed",String(on));$("musicLbl").textContent=on?"Pause music":"Play music";$("radio").classList.toggle("on",on)}
+function startMusic(){if(musicOff)return;const p=bgm.play();if(p&&p.catch)p.catch(()=>{})}
+function toggleMusic(){if(bgm.paused){musicOff=false;try{localStorage.removeItem("cn-music")}catch(e){}bgm.play().catch(()=>{})}else{musicOff=true;try{localStorage.setItem("cn-music","off")}catch(e){}bgm.pause()}}
+bgm.addEventListener("play",()=>setRadio(true));bgm.addEventListener("pause",()=>setRadio(false));
+$("musicBtn").hidden=false;
+$("radioBtn").addEventListener("click",e=>{e.stopPropagation();toggleMusic()});$("musicBtn").addEventListener("click",e=>{e.stopPropagation();toggleMusic()});
+const kick=e=>{if(e.target.closest&&e.target.closest("#musicBtn,#radioBtn"))return;if(bgm.paused&&!musicOff)startMusic();document.removeEventListener("pointerdown",kick,true);document.removeEventListener("keydown",kick,true)};
+document.addEventListener("pointerdown",kick,true);document.addEventListener("keydown",kick,true);
 </script>
 
 </body>
